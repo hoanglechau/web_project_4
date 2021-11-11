@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Around the U.S.</title>
+		<link rel="stylesheet" href="pages/index.css" />
+	</head>
+	<body>
+		<div class="page">
+			<header class="header">
+				<img
+					class="header__logo"
+					src="images/logo.svg"
+					alt="Around the U.S. logo"
+				/>
+			</header>
+			<main class="content">
+				<section class="profile">
+					<div class="profile__avatar_overlay">
+						<img
+							class="profile__avatar"
+							src="images/profile_avatar.jpg"
+							alt="Profile avatar"
+						/>
+					</div>
+					<div class="profile__info">
+						<div class="profile__title">
+							<h1 class="profile__name">Jacques Cousteau</h1>
+							<button class="profile__btn-edit" type="button"></button>
+						</div>
+						<p class="profile__about">Explorer</p>
+					</div>
+					<button class="profile__btn-add" type="button"></button>
+				</section>
+				<section class="gallery">
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/yosemite.jpg"
+							alt="An image of Yosemite Valley with trees beside a river, mountains, and the sky"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Yosemite Valley</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/lake_louise.jpg"
+							alt="An image of Lake Louise with a blue lake, mountains, and the sky"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Lake Louise</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/bald_mountains.jpg"
+							alt="An image of the Bald Mountains with the sky and the sunset"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Bald Mountains</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/latemar.jpg"
+							alt="An image of Latemar with the mountains and the starry sky"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Latemar</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/vanoise.jpg"
+							alt="An image of Vanoise National Park with the lake, the mountains, and the sky"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Vanoise National Park</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<img
+							class="card__image"
+							src="images/lago_braies.jpg"
+							alt="An image of Lago di Braies with the lake, the boats, the mountains, and the sky"
+						/>
+						<div class="card__place">
+							<h2 class="card__title">Lago di Braies</h2>
+							<div class="card__like-container">
+								<button class="card__btn-like" type="button"></button>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+			<footer class="footer">
+				<p class="footer__copyright">© 2021 Around The U.S.</p>
+			</footer>
+
+			<div class="modal">
+				<div class="modal__content">
+					<button class="modal__close" type="button"></button>
+					<h3 class="modal__title">Edit profile</h3>
+					<form class="modal__form" novalidate>
+						<label class="modal__field" for="name-input">
+							<input
+								class="modal__input"
+								id="name-input"
+								type="text"
+								name="name"
+								placeholder="Name"
+								minlength="2"
+								maxlength="40"
+								required
+							/>
+						</label>
+						<label class="modal__field" for="about-input">
+							<input
+								class="modal__input"
+								id="about-input"
+								type="text"
+								name="about"
+								placeholder="About me"
+								minlength="2"
+								maxlength="200"
+								required
+							/>
+						</label>
+						<button class="modal__button" type="submit">Save</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script src="scripts/index.js"></script>
+	</body>
+</html>

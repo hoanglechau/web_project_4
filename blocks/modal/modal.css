@@ -1,0 +1,16 @@
+@import url(__button/modal__button.css);
+@import url(__close/modal__close.css);
+@import url(__content/modal__content.css);
+@import url(__field/modal__field.css);
+@import url(__input/modal__input.css);
+@import url(__title/modal__title.css);
+
+.modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
