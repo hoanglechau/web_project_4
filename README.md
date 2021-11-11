@@ -1,16 +1,15 @@
 # Project 4: Around The U.S.
 
-### Overview
+### Description
 
-* Figma
-* Images
+The website in this project has 4 sections: Header, Profile, Gallery, and Footer.
 
-**Figma**
+The Profile section contains an avatar, the name, about information, a usable edit button, and an unusable add card button. When the user clicks on the edit button, a modal window will open and allow the user to change the values of the name and about information after the user clicks "Save". When the user clicks on the close button or the "Save" button in the modal window, the modal will be closed.
 
-* [Link to the project in Figma](https://www.figma.com/file/SurN1jaeEQIhuZEDMhmWWf/Sprint-4-Around-The-U.S.-desktop-mobile?node-id=0%3A1)
+### Technologies
 
-**Images**
+HTML, CSS, JavaScript
 
-The way you'll do this at work is by exporting images directly from Figma — we recommend doing that to practice more. Don't forget to optimize them [here](https://tinypng.com/), so your project loads faster. 
+### Links
 
-Have fun with JavaScript!
+Link to GitHub Page: https://hoanglechau.github.io/web_project_4/
