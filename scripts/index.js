@@ -9,17 +9,15 @@ const form = document.querySelector(".modal__form");
 const nameInput = document.querySelector("#name-input");
 const aboutInput = document.querySelector("#about-input");
 
-/* Init */
-nameInput.value = profileName.textContent;
-aboutInput.value = profileAbout.textContent;
-
 /* Functions */
-function toggleModal() {
-	modal.style.display = "flex";
+function openModal() {
+	modal.classList.add("modal_open");
+	nameInput.value = profileName.textContent;
+	aboutInput.value = profileAbout.textContent;
 }
 
 function closeModal() {
-	modal.style.display = "none";
+	modal.classList.remove("modal_open");
 }
 
 function updateProfile() {
@@ -32,10 +30,11 @@ function updateProfile() {
 }
 
 /* Event Listeners */
-modal.addEventListener("submit", updateProfile, false);
-editProfileBtn.addEventListener("click", toggleModal, false);
+form.addEventListener("submit", updateProfile, false);
+editProfileBtn.addEventListener("click", openModal, false);
 closeBtn.addEventListener("click", closeModal, false);
 
+/*
 likeBtn.forEach((likeBtn) => {
 	likeBtn.addEventListener("click", () => {
 		if (likeBtn.classList.contains("card__btn-like_active")) {
@@ -45,3 +44,4 @@ likeBtn.forEach((likeBtn) => {
 		}
 	});
 });
+*/
