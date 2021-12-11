@@ -65,6 +65,7 @@
 								maxlength="40"
 								required
 							/>
+							<span class="modal__error" id="name-error"></span>
 						</label>
 						<label class="modal__field" for="about-input">
 							<input
@@ -77,6 +78,7 @@
 								maxlength="200"
 								required
 							/>
+							<span class="modal__error" id="about-error"></span>
 						</label>
 						<button class="modal__button" type="submit" aria-label="Save">
 							Save
@@ -105,18 +107,20 @@
 								maxlength="40"
 								required
 							/>
+							<span class="modal__error" id="title-error"></span>
 						</label>
 						<label class="modal__field" for="link-input">
 							<input
 								class="modal__input"
 								id="link-input"
-								type="text"
+								type="url"
 								name="link"
 								placeholder="Image URL"
 								minlength="2"
 								maxlength="200"
 								required
 							/>
+							<span class="modal__error" id="link-error"></span>
 						</label>
 						<button class="modal__button" type="submit" aria-label="Save">
 							Create
@@ -157,6 +161,7 @@
 			</div>
 		</template>
 
+		<script src="scripts/validate.js"></script>
 		<script src="scripts/index.js"></script>
 	</body>
 </html>
