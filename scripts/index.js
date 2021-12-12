@@ -35,6 +35,7 @@ const addModal = document.querySelector(".modal_type_add");
 const previewModal = document.querySelector(".modal_type_preview");
 const editForm = editModal.querySelector(".modal__form");
 const addForm = addModal.querySelector(".modal__form");
+const modalForms = document.querySelectorAll(".modal__form");
 const nameInput = document.querySelector("#name-input");
 const aboutInput = document.querySelector("#about-input");
 const titleInput = document.querySelector("#title-input");
@@ -137,6 +138,21 @@ function generateCard(card) {
 
 function renderCard(card, container) {
 	container.append(card);
+}
+
+modalForms.forEach((modalForm) => {
+	modalForm.addEventListener("mousedown", (e) => {
+		if (e.target === modalForm) {
+			closeModal(modalForm);
+			modalForm.removeEventListener("mousedown", closeModal);
+		}
+	});
+});
+
+function handlePressEscape(event) {
+	if (event.key === "Escape") {
+		closeModal(document.querySelector(".modal_open"));
+	}
 }
 
 /* -------------------------------------------------------------------------- */

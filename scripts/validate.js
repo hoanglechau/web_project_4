@@ -5,10 +5,15 @@ const checkInputValidity = (formEl, inputEl, settings) => {
 
 	if (!isValid(inputEl)) {
 		inputEl.classList.add(settings.inputErrorClass);
+		console.log(formEl);
+		console.log(inputEl);
+		console.log(errorEl);
 		errorEl.textContent = inputEl.validationMessage;
 		errorEl.classList.add(settings.errorClass);
 	} else {
 		inputEl.classList.remove(settings.inputErrorClass);
+		console.log(inputEl);
+		console.log(errorEl);
 		errorEl.textContent = "";
 		errorEl.classList.remove(settings.errorClass);
 	}
