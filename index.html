@@ -95,7 +95,7 @@
 						aria-label="Close"
 					></button>
 					<h3 class="modal__title">New Place</h3>
-					<form class="modal__form" name="modalForm" novalidate>
+					<form class="modal__form" name="modalForm" id="add-form" novalidate>
 						<label class="modal__field" for="title-input">
 							<input
 								class="modal__input"
@@ -103,8 +103,8 @@
 								type="text"
 								name="title"
 								placeholder="Title"
-								minlength="2"
-								maxlength="40"
+								minlength="1"
+								maxlength="30"
 								required
 							/>
 							<span class="modal__error" id="title-input-error"></span>
@@ -116,13 +116,16 @@
 								type="url"
 								name="link"
 								placeholder="Image URL"
-								minlength="2"
-								maxlength="200"
 								required
 							/>
 							<span class="modal__error" id="link-input-error"></span>
 						</label>
-						<button class="modal__button" type="submit" aria-label="Save">
+						<button
+							class="modal__button"
+							id="create-button"
+							type="submit"
+							aria-label="Save"
+						>
 							Create
 						</button>
 					</form>
