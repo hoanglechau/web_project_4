@@ -67,7 +67,6 @@ const cardTemplate = document
 function openModal(modal) {
 	modal.classList.add("modal_open");
 	document.addEventListener("keydown", handlePressEscape);
-	disableCreateButton();
 }
 
 function closeModal(modal) {
@@ -101,9 +100,10 @@ function addFormSubmitHandler(evt) {
 
 	const cardElement = generateCard(card);
 	gallery.prepend(cardElement);
+	disableCreateButton();
 
 	closeModal(addModal);
-	document.querySelector("#add-form").reset();
+	addForm.reset();
 }
 
 function generateCard(card) {
@@ -119,17 +119,10 @@ function generateCard(card) {
 		previewImageTitle.textContent = card.name;
 		openModal(previewModal);
 	});
-	previewModalCloseButton.addEventListener("click", () =>
-		closeModal(previewModal)
-	);
 
 	const likeButton = cardElement.querySelector(".card__btn-like");
 	likeButton.addEventListener("click", () => {
-		if (likeButton.classList.contains("card__btn-like_active")) {
-			likeButton.classList.remove("card__btn-like_active");
-		} else {
-			likeButton.classList.add("card__btn-like_active");
-		}
+		likeButton.classList.toggle("card__btn-like_active");
 	});
 
 	const deleteButton = cardElement.querySelector(".card__btn-delete");
@@ -175,11 +168,14 @@ initialCards.forEach(function (card) {
 	renderCard(newCard, gallery);
 });
 
+previewModalCloseButton.addEventListener("click", () =>
+	closeModal(previewModal)
+);
+
 modals.forEach((modal) => {
 	modal.addEventListener("mousedown", (e) => {
 		if (e.target === modal) {
 			closeModal(modal);
-			modal.removeEventListener("mousedown", closeModal);
 		}
 	});
 });
