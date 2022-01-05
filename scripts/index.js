@@ -1,3 +1,7 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+import { openModal, closeModal } from "./utils.js";
+
 const initialCards = [
 	{
 		name: "Yosemite Valley",
@@ -41,8 +45,6 @@ const aboutInput = document.querySelector("#about-input");
 const titleInput = document.querySelector("#title-input");
 const linkInput = document.querySelector("#link-input");
 const gallery = document.querySelector(".gallery");
-const previewImage = document.querySelector(".modal__preview-image");
-const previewImageTitle = document.querySelector(".modal__card-title");
 
 /* -------------------------------------------------------------------------- */
 /*                                   Buttons                                  */
@@ -57,22 +59,11 @@ const createButton = document.querySelector("#create-button");
 /* -------------------------------------------------------------------------- */
 /*                                  Templates                                 */
 /* -------------------------------------------------------------------------- */
-const cardTemplate = document
-	.querySelector("#card-template")
-	.content.querySelector(".card");
+const cardSelector = document.querySelector("#card-template");
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
-function openModal(modal) {
-	modal.classList.add("modal_open");
-	document.addEventListener("keydown", handlePressEscape);
-}
-
-function closeModal(modal) {
-	modal.classList.remove("modal_open");
-	document.removeEventListener("keydown", handlePressEscape);
-}
 
 function preFillEditForm() {
 	if (!editModal.classList.contains("modal_open")) {
@@ -98,50 +89,16 @@ function addFormSubmitHandler(evt) {
 		link: linkInput.value,
 	};
 
-	const cardElement = generateCard(card);
-	gallery.prepend(cardElement);
+	const newCard = new Card(card, cardSelector);
+	renderCard(newCard, gallery);
 	disableCreateButton();
 
 	closeModal(addModal);
 	addForm.reset();
 }
 
-function generateCard(card) {
-	const cardElement = cardTemplate.cloneNode(true);
-	cardElement.querySelector(".card__title").textContent = card.name;
-
-	const imageElement = cardElement.querySelector(".card__image");
-	imageElement.src = card.link;
-	imageElement.alt = `Photo of ${card.name}`;
-	imageElement.addEventListener("click", function () {
-		previewImage.src = card.link;
-		previewImage.alt = `Photo of ${card.name}`;
-		previewImageTitle.textContent = card.name;
-		openModal(previewModal);
-	});
-
-	const likeButton = cardElement.querySelector(".card__btn-like");
-	likeButton.addEventListener("click", () => {
-		likeButton.classList.toggle("card__btn-like_active");
-	});
-
-	const deleteButton = cardElement.querySelector(".card__btn-delete");
-	deleteButton.addEventListener("click", () => {
-		const cardToRemove = deleteButton.closest(".card");
-		cardToRemove.remove();
-	});
-
-	return cardElement;
-}
-
 function renderCard(card, container) {
-	container.append(card);
-}
-
-function handlePressEscape(evt) {
-	if (evt.key === "Escape") {
-		closeModal(document.querySelector(".modal_open"));
-	}
+	container.prepend(card.getView());
 }
 
 function disableCreateButton() {
@@ -164,7 +121,7 @@ addModalButton.addEventListener("click", () => openModal(addModal));
 addModalCloseButton.addEventListener("click", () => closeModal(addModal));
 
 initialCards.forEach(function (card) {
-	const newCard = generateCard(card);
+	const newCard = new Card(card, cardSelector);
 	renderCard(newCard, gallery);
 });
 
@@ -179,3 +136,20 @@ modals.forEach((modal) => {
 		}
 	});
 });
+
+/* -------------------------------------------------------------------------- */
+/*                                 Validation                                 */
+/* -------------------------------------------------------------------------- */
+const validationSettings = {
+	inputSelector: ".modal__input",
+	submitButtonSelector: ".modal__button",
+	inactiveButtonClass: "modal__button_inactive",
+	inputErrorClass: "modal__input_type_error",
+	errorClass: "modal__error_visible",
+};
+
+const editFormValidator = new FormValidator(validationSettings, editForm);
+const addFormValidator = new FormValidator(validationSettings, addForm);
+
+editFormValidator.enableValidation();
+addFormValidator.enableValidation();
