@@ -6,61 +6,45 @@ class FormValidator {
 		this._buttonElement = formElement.querySelector(
 			settings.submitButtonSelector
 		);
+		this._inactiveButtonClass = settings.inactiveButtonClass;
 	}
 
-	_checkInputValidity(formElement, inputElement, settings) {
-		console.log(formElement);
-		console.log(inputElement);
-
-		const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+	_checkInputValidity(inputElement) {
+		const errorElement = this._formElement.querySelector(
+			`#${inputElement.id}-error`
+		);
 
 		if (!inputElement.validity.valid) {
-			inputElement.classList.add(settings.inputErrorClass);
-			console.log(formElement);
-			console.log(inputElement);
-			console.log(errorElement);
+			inputElement.classList.add(this._settings.inputErrorClass);
 			errorElement.textContent = inputElement.validationMessage;
-			errorElement.classList.add(settings.errorClass);
+			errorElement.classList.add(this._settings.errorClass);
 		} else {
-			inputElement.classList.remove(settings.inputErrorClass);
-			console.log(inputElement);
-			console.log(errorElement);
+			inputElement.classList.remove(this._settings.inputErrorClass);
 			errorElement.textContent = "";
-			errorElement.classList.remove(settings.errorClass);
+			errorElement.classList.remove(this._settings.errorClass);
 		}
 	}
 
-	_toggleButtonState(inputList, buttonElement, { inactiveButtonClass }) {
-		const allValid = inputList.every(
+	_toggleButtonState() {
+		const allValid = this._inputList.every(
 			(inputElement) => inputElement.validity.valid
 		);
 		if (allValid) {
-			buttonElement.classList.remove(inactiveButtonClass);
-			buttonElement.disabled = false;
+			this._buttonElement.classList.remove(this._inactiveButtonClass);
+			this._buttonElement.disabled = false;
 		} else {
-			buttonElement.classList.add(inactiveButtonClass);
-			buttonElement.disabled = true;
+			this._buttonElement.classList.add(this._inactiveButtonClass);
+			this._buttonElement.disabled = true;
 		}
 	}
 
-	_setupEventListeners(
-		formElement,
-		{ inputSelector, submitButtonSelector, ...otherSettings }
-	) {
-		this._toggleButtonState(
-			this._inputList,
-			this._buttonElement,
-			otherSettings
-		);
+	_setupEventListeners() {
+		this._toggleButtonState();
 
 		this._inputList.forEach((inputElement) => {
 			inputElement.addEventListener("input", (e) => {
-				this._checkInputValidity(formElement, inputElement, otherSettings);
-				this._toggleButtonState(
-					this._inputList,
-					this._buttonElement,
-					otherSettings
-				);
+				this._checkInputValidity(inputElement);
+				this._toggleButtonState();
 			});
 		});
 	}
@@ -75,7 +59,8 @@ class FormValidator {
 
 export default FormValidator;
 
-/*
+/* Advice:
+
 You could make a special method resetValidation for clearing errors and controlling the submit button.
 It could look something like this:
 
