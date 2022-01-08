@@ -26,8 +26,8 @@ class Card {
 	}
 
 	_handleDeleteButton() {
-		const cardToRemove = this._deleteButton.closest(".card");
-		cardToRemove.remove();
+		this._element.remove();
+		this._element = null;
 	}
 
 	_handlePreviewImage() {

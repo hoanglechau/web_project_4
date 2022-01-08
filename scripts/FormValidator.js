@@ -2,6 +2,10 @@ class FormValidator {
 	constructor(settings, formElement) {
 		this._settings = settings;
 		this._formElement = formElement;
+		this._inputList = [...formElement.querySelectorAll(settings.inputSelector)];
+		this._buttonElement = formElement.querySelector(
+			settings.submitButtonSelector
+		);
 	}
 
 	_checkInputValidity(formElement, inputElement, settings) {
@@ -43,14 +47,20 @@ class FormValidator {
 		formElement,
 		{ inputSelector, submitButtonSelector, ...otherSettings }
 	) {
-		const inputList = [...formElement.querySelectorAll(inputSelector)];
-		const buttonElement = formElement.querySelector(submitButtonSelector);
-		this._toggleButtonState(inputList, buttonElement, otherSettings);
+		this._toggleButtonState(
+			this._inputList,
+			this._buttonElement,
+			otherSettings
+		);
 
-		inputList.forEach((inputElement) => {
+		this._inputList.forEach((inputElement) => {
 			inputElement.addEventListener("input", (e) => {
 				this._checkInputValidity(formElement, inputElement, otherSettings);
-				this._toggleButtonState(inputList, buttonElement, otherSettings);
+				this._toggleButtonState(
+					this._inputList,
+					this._buttonElement,
+					otherSettings
+				);
 			});
 		});
 	}
@@ -59,8 +69,24 @@ class FormValidator {
 		this._formElement.addEventListener("submit", (evt) => {
 			evt.preventDefault();
 		});
-		this._setupEventListeners(this._formElement, this._settings);
+		this._setupEventListeners();
 	}
 }
 
 export default FormValidator;
+
+/*
+You could make a special method resetValidation for clearing errors and controlling the submit button.
+It could look something like this:
+
+resetValidation() {
+    this._toggleButtonState(); <== controlling the submit button ==
+
+    this._inputList.forEach((inputElement) => {
+        this._hideError(inputElement) <== clearing errors ==
+    });
+
+}
+
+And you can call it in index.js when you click on open buttons
+*/

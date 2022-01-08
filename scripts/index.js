@@ -54,7 +54,6 @@ const editModalCloseButton = editModal.querySelector(".modal__close");
 const addModalButton = document.querySelector(".profile__btn-add");
 const addModalCloseButton = addModal.querySelector(".modal__close");
 const previewModalCloseButton = previewModal.querySelector(".modal__close");
-const createButton = document.querySelector("#create-button");
 
 /* -------------------------------------------------------------------------- */
 /*                                  Templates                                 */
@@ -66,10 +65,8 @@ const cardSelector = document.querySelector("#card-template");
 /* -------------------------------------------------------------------------- */
 
 function preFillEditForm() {
-	if (!editModal.classList.contains("modal_open")) {
-		nameInput.value = profileName.textContent;
-		aboutInput.value = profileAbout.textContent;
-	}
+	nameInput.value = profileName.textContent;
+	aboutInput.value = profileAbout.textContent;
 }
 
 function editFormSubmitHandler(evt) {
@@ -89,21 +86,20 @@ function addFormSubmitHandler(evt) {
 		link: linkInput.value,
 	};
 
-	const newCard = new Card(card, cardSelector);
-	renderCard(newCard, gallery);
-	disableCreateButton();
+	createCard(card);
 
 	closeModal(addModal);
 	addForm.reset();
 }
 
-function renderCard(card, container) {
-	container.prepend(card.getView());
+function createCard(card) {
+	const cardElement = new Card(card, cardSelector);
+	renderCard(cardElement, gallery);
+	return cardElement;
 }
 
-function disableCreateButton() {
-	createButton.classList.add("modal__button_inactive");
-	createButton.disabled = true;
+function renderCard(card, container) {
+	container.prepend(card.getView());
 }
 
 /* -------------------------------------------------------------------------- */
@@ -121,8 +117,7 @@ addModalButton.addEventListener("click", () => openModal(addModal));
 addModalCloseButton.addEventListener("click", () => closeModal(addModal));
 
 initialCards.forEach(function (card) {
-	const newCard = new Card(card, cardSelector);
-	renderCard(newCard, gallery);
+	createCard(card);
 });
 
 previewModalCloseButton.addEventListener("click", () =>
@@ -153,3 +148,49 @@ const addFormValidator = new FormValidator(validationSettings, addForm);
 
 editFormValidator.enableValidation();
 addFormValidator.enableValidation();
+
+/* How to combine overlay and close buttons listeners together using generic css classes:
+
+const popups = document.querySelectorAll('.popup')
+
+    popups.forEach((popup) => {
+        popup.addEventListener('click', (evt) => {
+            if (evt.target.classList.contains('popup_opened')) {
+                closePopup(popup)
+            }
+            if (evt.target.classList.contains('popup__close')) {
+				closePopup(popup)
+            }
+        })
+    })
+
+*/
+
+/*
+You can universally create instances of validators for all forms in the project storing them inside one object  formValidators .  And then you can take any validator using attribute name of the form where you need to disable/enable the submit button or remove errors.
+const formValidators = {}
+
+-> enable validation:
+const enableValidation = (config) => {
+	const formList = Array.from(document.querySelectorAll(config.formSelector))
+	formList.forEach((formElement) => {
+		const validator = new FormValidator(formElement, config)
+		-> here you get the name of the form:
+		const formName = formElement.getAttribute('name')
+
+		-> here you store a validator by the `name` of the form:
+		formValidators[formName] = validator;
+		validator.enableValidation();
+	});
+};
+
+enableValidation(config);
+
+-> And now you can use them for disabling buttons or clearing errors:
+
+formValidators[ profileForm.getAttribute('name') ].resetValidation()
+
+-> or:
+
+formValidators[ addCardForm.getAttribute('name') ].resetValidation()
+*/
