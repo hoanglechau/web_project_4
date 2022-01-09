@@ -9,19 +9,37 @@ class FormValidator {
 		this._inactiveButtonClass = settings.inactiveButtonClass;
 	}
 
-	_checkInputValidity(inputElement) {
+	_addErrorStyles(inputElement) {
+		inputElement.classList.add(this._settings.inputErrorClass);
+	}
+
+	_removeErrorStyles(inputElement) {
+		inputElement.classList.remove(this._settings.inputErrorClass);
+	}
+
+	_showErrorMessage(inputElement) {
 		const errorElement = this._formElement.querySelector(
 			`#${inputElement.id}-error`
 		);
+		errorElement.textContent = inputElement.validationMessage;
+		errorElement.classList.add(this._settings.errorClass);
+	}
 
+	_hideErrorMessage(inputElement) {
+		const errorElement = this._formElement.querySelector(
+			`#${inputElement.id}-error`
+		);
+		errorElement.textContent = "";
+		errorElement.classList.remove(this._settings.errorClass);
+	}
+
+	_checkInputValidity(inputElement) {
 		if (!inputElement.validity.valid) {
-			inputElement.classList.add(this._settings.inputErrorClass);
-			errorElement.textContent = inputElement.validationMessage;
-			errorElement.classList.add(this._settings.errorClass);
+			this._addErrorStyles(inputElement);
+			this._showErrorMessage(inputElement);
 		} else {
-			inputElement.classList.remove(this._settings.inputErrorClass);
-			errorElement.textContent = "";
-			errorElement.classList.remove(this._settings.errorClass);
+			this._removeErrorStyles(inputElement);
+			this._hideErrorMessage(inputElement);
 		}
 	}
 
@@ -55,23 +73,15 @@ class FormValidator {
 		});
 		this._setupEventListeners();
 	}
+
+	resetValidation() {
+		this._toggleButtonState();
+
+		this._inputList.forEach((inputElement) => {
+			this._removeErrorStyles(inputElement);
+			this._hideErrorMessage(inputElement);
+		});
+	}
 }
 
 export default FormValidator;
-
-/* Advice:
-
-You could make a special method resetValidation for clearing errors and controlling the submit button.
-It could look something like this:
-
-resetValidation() {
-    this._toggleButtonState(); <== controlling the submit button ==
-
-    this._inputList.forEach((inputElement) => {
-        this._hideError(inputElement) <== clearing errors ==
-    });
-
-}
-
-And you can call it in index.js when you click on open buttons
-*/

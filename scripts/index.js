@@ -69,6 +69,11 @@ function preFillEditForm() {
 	aboutInput.value = profileAbout.textContent;
 }
 
+function resetAddForm() {
+	titleInput.value = "";
+	linkInput.value = "";
+}
+
 function editFormSubmitHandler(evt) {
 	evt.preventDefault();
 
@@ -94,11 +99,11 @@ function addFormSubmitHandler(evt) {
 
 function createCard(card) {
 	const cardElement = new Card(card, cardSelector);
-	renderCard(cardElement, gallery);
+	addCard(cardElement, gallery);
 	return cardElement;
 }
 
-function renderCard(card, container) {
+function addCard(card, container) {
 	container.prepend(card.getView());
 }
 
@@ -109,14 +114,19 @@ editForm.addEventListener("submit", editFormSubmitHandler);
 editModalButton.addEventListener("click", () => {
 	preFillEditForm();
 	openModal(editModal);
+	editFormValidator.resetValidation();
 });
 editModalCloseButton.addEventListener("click", () => closeModal(editModal));
 
 addForm.addEventListener("submit", addFormSubmitHandler);
-addModalButton.addEventListener("click", () => openModal(addModal));
+addModalButton.addEventListener("click", () => {
+	resetAddForm();
+	openModal(addModal);
+	addFormValidator.resetValidation();
+});
 addModalCloseButton.addEventListener("click", () => closeModal(addModal));
 
-initialCards.forEach(function (card) {
+initialCards.forEach((card) => {
 	createCard(card);
 });
 
