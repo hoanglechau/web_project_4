@@ -1,0 +1,12 @@
+{
+	"colorize.languages": [
+		"typescript",
+		"javascript",
+		"html",
+		"css",
+		"scss",
+		"python",
+		"c++",
+		"java"
+	]
+}
