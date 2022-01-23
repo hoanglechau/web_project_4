@@ -1,16 +1,17 @@
+import "./styles/index.css";
 import {
 	initialCards,
 	selectors,
 	modalEditUserInfo,
 	modalAddCard,
 	validationSettings,
-} from "../utils/constants.js";
-import Card from "../components/Card.js";
-import FormValidator from "../components/FormValidator.js";
-import Section from "../components/Section.js";
-import PopupWithImage from "../components/PopupWithImage.js";
-import PopupWithForm from "../components/PopupWithForm.js";
-import UserInfo from "../components/UserInfo.js";
+} from "./utils/constants.js";
+import Card from "./components/Card.js";
+import FormValidator from "./components/FormValidator.js";
+import Section from "./components/Section.js";
+import PopupWithImage from "./components/PopupWithImage.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import UserInfo from "./components/UserInfo.js";
 
 /* -------------------------------------------------------------------------- */
 /*                               Class Instances                              */
@@ -58,12 +59,11 @@ addFormValidator.enableValidation();
 const editFormSubmitHandler = (evt) => {
 	evt.preventDefault();
 
-	modalEditUserInfo.nameSelector.textContent =
-		modalEditUserInfo.nameInput.value;
-	modalEditUserInfo.aboutSelector.textContent =
-		modalEditUserInfo.aboutInput.value;
+	const name = modalEditUserInfo.nameInput.value;
+	const about = modalEditUserInfo.aboutInput.value;
+	userInfo.setUserInfo({ name, about });
 
-	this.close();
+	modalEditForm.close();
 };
 
 const addFormSubmitHandler = (evt) => {
@@ -76,7 +76,7 @@ const addFormSubmitHandler = (evt) => {
 
 	createCard(card);
 
-	this.close();
+	modalAddForm.close();
 	modalAddCard.form.reset();
 };
 
@@ -117,7 +117,15 @@ modalAddCard.button.addEventListener("click", (evt) => {
 /* -------------------------------------------------------------------------- */
 
 const createCard = (card) => {
-	const cardElement = new Card(card, selectors.cardTemplate);
+	const cardElement = new Card(
+		{
+			data: card,
+			handleCardClick: (imageData) => {
+				cardPreviewModal.open(imageData);
+			},
+		},
+		selectors.cardTemplate
+	);
 	addCard(cardElement, selectors.gallery);
 	return cardElement;
 };

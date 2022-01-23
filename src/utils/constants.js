@@ -26,13 +26,13 @@ export const initialCards = [
 ];
 
 export const selectors = {
-	gallery: ".gallery",
-	cardTemplate: ".card-template",
+	gallery: document.querySelector(".gallery"),
+	cardTemplate: document.querySelector(".card-template"),
 	previewModal: ".modal_type_preview",
 };
 
 export const modalEditUserInfo = {
-	selector: ".modal.modal_type_edit",
+	selector: ".modal_type_edit",
 	nameSelector: ".profile__name",
 	aboutSelector: ".profile__about",
 	button: document.querySelector(".profile__btn-edit"),
@@ -42,7 +42,7 @@ export const modalEditUserInfo = {
 };
 
 export const modalAddCard = {
-	selector: ".modal.modal_type_add",
+	selector: ".modal_type_add",
 	button: document.querySelector(".profile__btn-add"),
 	form: document.querySelector(".modal_type_add .modal__form"),
 	titleInput: document.querySelector("#title-input"),
