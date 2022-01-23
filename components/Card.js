@@ -1,19 +1,14 @@
-import { openModal } from "./utils.js";
-
-const previewImage = document.querySelector(".modal__preview-image");
-const previewImageTitle = document.querySelector(".modal__card-title");
-const previewModal = document.querySelector(".modal_type_preview");
-
 class Card {
-	constructor(data, cardSelector) {
+	constructor({ data, handleCardClick }, cardSelector) {
 		this._name = data.name;
 		this._link = data.link;
 		this._cardSelector = cardSelector;
+		this._handleCardClick = handleCardClick;
 	}
 
 	_setEventListeners() {
 		this._imageElement.addEventListener("click", () =>
-			this._handlePreviewImage()
+			this._handleCardClick({ name: this._name, link: this._link })
 		);
 		this._likeButton.addEventListener("click", () => this._handleLikeButton());
 		this._deleteButton.addEventListener("click", () =>
@@ -28,13 +23,6 @@ class Card {
 	_handleDeleteButton() {
 		this._element.remove();
 		this._element = null;
-	}
-
-	_handlePreviewImage() {
-		previewImage.src = this._link;
-		previewImage.alt = `Photo of ${this._name}`;
-		previewImageTitle.textContent = this._name;
-		openModal(previewModal);
 	}
 
 	_getTemplate() {

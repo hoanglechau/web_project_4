@@ -1,6 +1,6 @@
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import { openModal, closeModal } from "./utils.js";
+import Card from "../components/Card.js";
+import FormValidator from "../scripts/FormValidator.js";
+import { openModal, closeModal } from "../scripts/utils.js";
 
 const initialCards = [
 	{
@@ -158,49 +158,3 @@ const addFormValidator = new FormValidator(validationSettings, addForm);
 
 editFormValidator.enableValidation();
 addFormValidator.enableValidation();
-
-/* How to combine overlay and close buttons listeners together using generic css classes:
-
-const popups = document.querySelectorAll('.popup')
-
-    popups.forEach((popup) => {
-        popup.addEventListener('click', (evt) => {
-            if (evt.target.classList.contains('popup_opened')) {
-                closePopup(popup)
-            }
-            if (evt.target.classList.contains('popup__close')) {
-				closePopup(popup)
-            }
-        })
-    })
-
-*/
-
-/*
-You can universally create instances of validators for all forms in the project storing them inside one object  formValidators .  And then you can take any validator using attribute name of the form where you need to disable/enable the submit button or remove errors.
-const formValidators = {}
-
--> enable validation:
-const enableValidation = (config) => {
-	const formList = Array.from(document.querySelectorAll(config.formSelector))
-	formList.forEach((formElement) => {
-		const validator = new FormValidator(formElement, config)
-		-> here you get the name of the form:
-		const formName = formElement.getAttribute('name')
-
-		-> here you store a validator by the `name` of the form:
-		formValidators[formName] = validator;
-		validator.enableValidation();
-	});
-};
-
-enableValidation(config);
-
--> And now you can use them for disabling buttons or clearing errors:
-
-formValidators[ profileForm.getAttribute('name') ].resetValidation()
-
--> or:
-
-formValidators[ addCardForm.getAttribute('name') ].resetValidation()
-*/
