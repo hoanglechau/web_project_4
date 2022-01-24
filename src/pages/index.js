@@ -1,17 +1,17 @@
-import "./styles/index.css";
+import "./index.css";
 import {
 	initialCards,
 	selectors,
 	modalEditUserInfo,
 	modalAddCard,
 	validationSettings,
-} from "./utils/constants.js";
-import Card from "./components/Card.js";
-import FormValidator from "./components/FormValidator.js";
-import Section from "./components/Section.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import UserInfo from "./components/UserInfo.js";
+} from "../utils/constants.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
 
 /* -------------------------------------------------------------------------- */
 /*                               Class Instances                              */
@@ -25,18 +25,22 @@ const userInfo = new UserInfo({
 const cardPreviewModal = new PopupWithImage(selectors.previewModal);
 cardPreviewModal.setEventListeners();
 
+const createCard = (card) => {
+	return new Card(
+		{
+			data: card,
+			handleCardClick: (imageData) => {
+				cardPreviewModal.open(imageData);
+			},
+		},
+		selectors.cardTemplate
+	);
+};
+
 const cardSection = new Section(
 	{
 		renderer: (item) => {
-			const cardElement = new Card(
-				{
-					data: item,
-					handleCardClick: (imageData) => {
-						cardPreviewModal.open(imageData);
-					},
-				},
-				selectors.cardTemplate
-			);
+			const cardElement = createCard(item);
 			cardSection.addItem(cardElement.getView());
 		},
 	},
@@ -44,24 +48,11 @@ const cardSection = new Section(
 );
 cardSection.renderItems(initialCards);
 
-const editFormValidator = new FormValidator(
-	validationSettings,
-	modalEditUserInfo.form
-);
-editFormValidator.enableValidation();
-
-const addFormValidator = new FormValidator(
-	validationSettings,
-	modalAddCard.form
-);
-addFormValidator.enableValidation();
-
 const editFormSubmitHandler = (evt) => {
 	evt.preventDefault();
 
-	const name = modalEditUserInfo.nameInput.value;
-	const about = modalEditUserInfo.aboutInput.value;
-	userInfo.setUserInfo({ name, about });
+	const inputValue = modalEditForm.getInputValues();
+	userInfo.setUserInfo({ name: inputValue.name, about: inputValue.about });
 
 	modalEditForm.close();
 };
@@ -69,15 +60,14 @@ const editFormSubmitHandler = (evt) => {
 const addFormSubmitHandler = (evt) => {
 	evt.preventDefault();
 
-	const card = {
-		name: modalAddCard.titleInput.value,
-		link: modalAddCard.linkInput.value,
-	};
-
-	createCard(card);
+	const inputValue = modalAddForm.getInputValues();
+	const cardElement = createCard({
+		name: inputValue.title,
+		link: inputValue.link,
+	});
+	cardSection.addItem(cardElement.getView());
 
 	modalAddForm.close();
-	modalAddCard.form.reset();
 };
 
 const modalEditForm = new PopupWithForm(
@@ -101,35 +91,30 @@ modalEditUserInfo.button.addEventListener("click", (evt) => {
 	const profileInfo = userInfo.getUserInfo();
 	modalEditUserInfo.nameInput.value = profileInfo.name;
 	modalEditUserInfo.aboutInput.value = profileInfo.about;
-	editFormValidator.resetValidation();
+	formValidators["modalEditForm"].resetValidation();
 	modalEditForm.open();
 });
 
 modalAddCard.button.addEventListener("click", (evt) => {
-	modalAddCard.form.reset();
 	evt.preventDefault();
-	addFormValidator.resetValidation();
+	formValidators["modalAddForm"].resetValidation();
 	modalAddForm.open();
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                  Functions                                 */
+/*                               Form Validation                              */
 /* -------------------------------------------------------------------------- */
+const formValidators = {};
 
-const createCard = (card) => {
-	const cardElement = new Card(
-		{
-			data: card,
-			handleCardClick: (imageData) => {
-				cardPreviewModal.open(imageData);
-			},
-		},
-		selectors.cardTemplate
-	);
-	addCard(cardElement, selectors.gallery);
-	return cardElement;
+const enableValidation = (config) => {
+	const formList = Array.from(document.querySelectorAll(config.formSelector));
+	formList.forEach((formElement) => {
+		const validator = new FormValidator(config, formElement);
+		const formName = formElement.getAttribute("name");
+
+		formValidators[formName] = validator;
+		validator.enableValidation();
+	});
 };
 
-const addCard = (card, container) => {
-	container.prepend(card.getView());
-};
+enableValidation(validationSettings);

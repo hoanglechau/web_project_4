@@ -50,6 +50,7 @@ export const modalAddCard = {
 };
 
 export const validationSettings = {
+	formSelector: ".modal__form",
 	inputSelector: ".modal__input",
 	submitButtonSelector: ".modal__button",
 	inactiveButtonClass: "modal__button_inactive",
