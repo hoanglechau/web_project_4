@@ -12,4 +12,4 @@ HTML, CSS, JavaScript
 
 ## Links
 
-Link to GitHub Page: https://hoanglechau.github.io/web_project_4/
+Link to GitHub Page: <https://hoanglechau.github.io/web_project_4/>

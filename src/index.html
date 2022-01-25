@@ -1,166 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Around the U.S.</title>
-	</head>
-	<body>
-		<div class="page">
-			<header class="header">
-				<img
-					class="header__logo"
-					src="<%=require('./images/logo.svg')%>"
-					alt="Around the U.S. logo"
-				/>
-			</header>
-			<main class="content">
-				<section class="profile">
-					<img
-						class="profile__avatar"
-						src="<%=require('./images/profile_avatar.jpg')%>"
-						alt="Profile avatar"
-					/>
-					<div class="profile__info">
-						<div class="profile__title">
-							<h1 class="profile__name">Jacques Cousteau</h1>
-							<button
-								class="profile__btn-edit"
-								type="button"
-								aria-label="Edit Profile"
-							></button>
-						</div>
-						<p class="profile__about">Explorer</p>
-					</div>
-					<button
-						class="profile__btn-add"
-						type="button"
-						aria-label="Add New Card"
-					></button>
-				</section>
-				<section class="gallery"></section>
-			</main>
-			<footer class="footer">
-				<p class="footer__copyright">© 2021 Around The U.S.</p>
-			</footer>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Around the U.S.</title>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <img
+          class="header__logo"
+          src="<%=require('./images/logo.svg')%>"
+          alt="Around the U.S. logo"
+        />
+      </header>
+      <main class="content">
+        <section class="profile">
+          <img
+            class="profile__avatar"
+            src="<%=require('./images/profile_avatar.jpg')%>"
+            alt="Profile avatar"
+          />
+          <div class="profile__info">
+            <div class="profile__title">
+              <h1 class="profile__name">Jacques Cousteau</h1>
+              <button
+                class="profile__btn-edit"
+                type="button"
+                aria-label="Edit Profile"
+              ></button>
+            </div>
+            <p class="profile__about">Explorer</p>
+          </div>
+          <button
+            class="profile__btn-add"
+            type="button"
+            aria-label="Add New Card"
+          ></button>
+        </section>
+        <section class="gallery"></section>
+      </main>
+      <footer class="footer">
+        <p class="footer__copyright">© 2021 Around The U.S.</p>
+      </footer>
 
-			<div class="modal modal_type_edit">
-				<div class="modal__content">
-					<button
-						class="modal__close"
-						type="button"
-						aria-label="Close"
-					></button>
-					<h3 class="modal__title">Edit profile</h3>
-					<form class="modal__form" name="modalEditForm" novalidate>
-						<label class="modal__field" for="name-input">
-							<input
-								class="modal__input"
-								id="name-input"
-								type="text"
-								name="name"
-								placeholder="Name"
-								minlength="2"
-								maxlength="40"
-								required
-							/>
-							<span class="modal__error" id="name-input-error"></span>
-						</label>
-						<label class="modal__field" for="about-input">
-							<input
-								class="modal__input"
-								id="about-input"
-								type="text"
-								name="about"
-								placeholder="About me"
-								minlength="2"
-								maxlength="200"
-								required
-							/>
-							<span class="modal__error" id="about-input-error"></span>
-						</label>
-						<button class="modal__button" type="submit" aria-label="Save">
-							Save
-						</button>
-					</form>
-				</div>
-			</div>
+      <div class="modal modal_type_edit">
+        <div class="modal__content">
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close"
+          ></button>
+          <h3 class="modal__title">Edit profile</h3>
+          <form class="modal__form" name="modalEditForm" novalidate>
+            <label class="modal__field" for="name-input">
+              <input
+                class="modal__input"
+                id="name-input"
+                type="text"
+                name="name"
+                placeholder="Name"
+                minlength="2"
+                maxlength="40"
+                required
+              />
+              <span class="modal__error" id="name-input-error"></span>
+            </label>
+            <label class="modal__field" for="about-input">
+              <input
+                class="modal__input"
+                id="about-input"
+                type="text"
+                name="about"
+                placeholder="About me"
+                minlength="2"
+                maxlength="200"
+                required
+              />
+              <span
+                class="modal__error"
+                id="about-input-error"
+              ></span>
+            </label>
+            <button
+              class="modal__button"
+              type="submit"
+              aria-label="Save"
+            >
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
 
-			<div class="modal modal_type_add">
-				<div class="modal__content">
-					<button
-						class="modal__close"
-						type="button"
-						aria-label="Close"
-					></button>
-					<h3 class="modal__title">New Place</h3>
-					<form class="modal__form" name="modalAddForm" novalidate>
-						<label class="modal__field" for="title-input">
-							<input
-								class="modal__input"
-								id="title-input"
-								type="text"
-								name="title"
-								placeholder="Title"
-								minlength="1"
-								maxlength="30"
-								required
-							/>
-							<span class="modal__error" id="title-input-error"></span>
-						</label>
-						<label class="modal__field" for="link-input">
-							<input
-								class="modal__input"
-								id="link-input"
-								type="url"
-								name="link"
-								placeholder="Image URL"
-								required
-							/>
-							<span class="modal__error" id="link-input-error"></span>
-						</label>
-						<button
-							class="modal__button"
-							id="create-button"
-							type="submit"
-							aria-label="Save"
-						>
-							Create
-						</button>
-					</form>
-				</div>
-			</div>
+      <div class="modal modal_type_add">
+        <div class="modal__content">
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close"
+          ></button>
+          <h3 class="modal__title">New Place</h3>
+          <form class="modal__form" name="modalAddForm" novalidate>
+            <label class="modal__field" for="title-input">
+              <input
+                class="modal__input"
+                id="title-input"
+                type="text"
+                name="title"
+                placeholder="Title"
+                minlength="1"
+                maxlength="30"
+                required
+              />
+              <span
+                class="modal__error"
+                id="title-input-error"
+              ></span>
+            </label>
+            <label class="modal__field" for="link-input">
+              <input
+                class="modal__input"
+                id="link-input"
+                type="url"
+                name="link"
+                placeholder="Image URL"
+                required
+              />
+              <span class="modal__error" id="link-input-error"></span>
+            </label>
+            <button
+              class="modal__button"
+              id="create-button"
+              type="submit"
+              aria-label="Save"
+            >
+              Create
+            </button>
+          </form>
+        </div>
+      </div>
 
-			<div class="modal modal_type_preview">
-				<div class="modal__content modal__content_type_preview">
-					<button
-						class="modal__close"
-						type="button"
-						aria-label="Close"
-					></button>
-					<img class="modal__preview-image" src="#" alt="#" />
-					<h3 class="modal__card-title"></h3>
-				</div>
-			</div>
-		</div>
+      <div class="modal modal_type_preview">
+        <div class="modal__content modal__content_type_preview">
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close"
+          ></button>
+          <img class="modal__preview-image" src="#" alt="#" />
+          <h3 class="modal__card-title"></h3>
+        </div>
+      </div>
+    </div>
 
-		<template class="card-template">
-			<div class="card">
-				<img class="card__image" src="#" alt="#" />
-				<div class="card__place">
-					<h2 class="card__title"></h2>
-					<button
-						class="card__btn-like"
-						type="button"
-						aria-label="Like"
-					></button>
-				</div>
-				<button
-					class="card__btn-delete"
-					type="button"
-					aria-label="Delete"
-				></button>
-			</div>
-		</template>
-	</body>
+    <template class="card-template">
+      <div class="card">
+        <img class="card__image" src="#" alt="#" />
+        <div class="card__place">
+          <h2 class="card__title"></h2>
+          <button
+            class="card__btn-like"
+            type="button"
+            aria-label="Like"
+          ></button>
+        </div>
+        <button
+          class="card__btn-delete"
+          type="button"
+          aria-label="Delete"
+        ></button>
+      </div>
+    </template>
+  </body>
 </html>

@@ -14,7 +14,8 @@
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "no-underscore-dangle": "off"
   },
   "plugins": ["prettier"]
 }
