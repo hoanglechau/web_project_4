@@ -1,9 +1,9 @@
 import './index.css';
 import {
-  initialCards,
   selectors,
   modalEditUserInfo,
   modalAddCard,
+  modalEditAvatar,
   validationSettings,
 } from '../utils/constants';
 import Card from '../components/Card';
@@ -11,7 +11,9 @@ import FormValidator from '../components/FormValidator';
 import Section from '../components/Section';
 import PopupWithImage from '../components/PopupWithImage';
 import PopupWithForm from '../components/PopupWithForm';
+import PopupWithConfirmation from '../components/PopupWithConfirmation';
 import UserInfo from '../components/UserInfo';
+import api from '../components/Api';
 
 /* -------------------------------------------------------------------------- */
 /*                               Class Instances                              */
@@ -20,65 +22,122 @@ import UserInfo from '../components/UserInfo';
 const userInfo = new UserInfo({
   nameSelector: modalEditUserInfo.nameSelector,
   aboutSelector: modalEditUserInfo.aboutSelector,
+  avatarSelector: modalEditAvatar.avatarSelector,
 });
 
 const cardPreviewModal = new PopupWithImage(selectors.previewModal);
 cardPreviewModal.setEventListeners();
 
-const createCard = (card) =>
-  new Card(
-    {
-      data: card,
-      handleCardClick: (imageData) => {
-        cardPreviewModal.open(imageData);
-      },
-    },
-    selectors.cardTemplate,
-  );
-
-const cardSection = new Section(
-  {
-    renderer: (item) => {
-      const cardElement = createCard(item);
-      cardSection.addItem(cardElement.getView());
-    },
-  },
-  selectors.gallery,
-);
-cardSection.renderItems(initialCards);
-
 const modalEditForm = new PopupWithForm(
   modalEditUserInfo.selector,
-  (evt) => {
-    evt.preventDefault();
-
-    const inputValue = modalEditForm.getInputValues();
-    userInfo.setUserInfo({
-      name: inputValue.name,
-      about: inputValue.about,
-    });
-
-    modalEditForm.close();
-  },
+  { defaultText: 'Save', updatingText: 'Saving...' },
+  (formInputs) =>
+    api
+      .setUserInfo({
+        name: formInputs.name,
+        about: formInputs.about,
+      })
+      .then((data) => {
+        userInfo.setUserInfo({
+          name: data.name,
+          about: data.about,
+          avatar: data.avatar,
+        });
+      }),
 );
 modalEditForm.setEventListeners();
 
-const modalAddForm = new PopupWithForm(
-  modalAddCard.selector,
-  (evt) => {
-    evt.preventDefault();
+const modalEditAvatarForm = new PopupWithForm(
+  modalEditAvatar.selector,
+  { defaultText: 'Save', updatingText: 'Saving...' },
+  (formInput) =>
+    api.setUserAvatar({ avatar: formInput.link }).then((data) => {
+      userInfo.setUserInfo({
+        name: data.name,
+        about: data.about,
+        avatar: data.avatar,
+      });
+    }),
+);
+modalEditAvatarForm.setEventListeners();
 
-    const inputValue = modalAddForm.getInputValues();
-    const cardElement = createCard({
-      name: inputValue.title,
-      link: inputValue.link,
-    });
-    cardSection.addItem(cardElement.getView());
-
-    modalAddForm.close();
+const modalDeleteCard = new PopupWithConfirmation(
+  selectors.deleteModal,
+  (cardId, card) => {
+    api
+      .removeCard(cardId)
+      .then(() => {
+        modalDeleteCard.close();
+        card.remove();
+        card = null;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 );
-modalAddForm.setEventListeners();
+modalDeleteCard.setEventListeners();
+
+const openModalDeleteCard = (cardId, card) => {
+  modalDeleteCard.open(cardId, card);
+};
+
+const createCard = (res, userInfoData) => {
+  const card = new Card(
+    res,
+    selectors.cardTemplate,
+    (link, name) => {
+      cardPreviewModal.open(link, name);
+    },
+    userInfoData._id,
+    openModalDeleteCard,
+  );
+  return card.generateCard();
+};
+
+api.getInitialCards().then(([cardsData, userInfoData]) => {
+  const cardList = new Section(
+    {
+      items: cardsData,
+      renderer: (item) => {
+        const cardElement = createCard(item, userInfoData);
+        cardList.addItem(cardElement);
+      },
+    },
+    selectors.gallery,
+  );
+
+  cardList.renderItems();
+
+  userInfo.setUserInfo({
+    name: userInfoData.name,
+    about: userInfoData.about,
+    avatar: userInfoData.avatar,
+  });
+
+  const modalAddForm = new PopupWithForm(
+    modalAddCard.selector,
+    { defaultText: 'Create', updatingText: 'Creating...' },
+    (formInputs) =>
+      api
+        .addCard({
+          name: formInputs.title,
+          link: formInputs.link,
+        })
+        .then((res) => {
+          const cardElement = createCard(res, userInfoData);
+          cardList.prependItem(cardElement);
+        }),
+  );
+  modalAddForm.setEventListeners();
+
+  modalAddCard.button.addEventListener('click', (evt) => {
+    modalAddCard.form.reset();
+    evt.preventDefault();
+    formValidators.modalAddForm.resetValidation();
+    modalAddForm.open();
+  });
+});
 
 /* -------------------------------------------------------------------------- */
 /*                               Form Validation                              */
@@ -113,8 +172,11 @@ modalEditUserInfo.button.addEventListener('click', (evt) => {
   modalEditForm.open();
 });
 
-modalAddCard.button.addEventListener('click', (evt) => {
+modalEditAvatar.button.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formValidators.modalAddForm.resetValidation();
-  modalAddForm.open();
+  evt.stopPropagation();
+  const profileInfo = userInfo.getUserInfo();
+  modalEditAvatar.avatarInput.value = profileInfo.avatar;
+  formValidators.modalEditAvatarForm.resetValidation();
+  modalEditAvatarForm.open();
 });

@@ -19,11 +19,13 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            class="profile__avatar"
-            src="<%=require('./images/profile_avatar.jpg')%>"
-            alt="Profile avatar"
-          />
+          <div class="profile__avatar_overlay">
+            <img
+              class="profile__avatar"
+              src="<%=require('./images/profile_avatar.jpg')%>"
+              alt="Profile avatar"
+            />
+          </div>
           <div class="profile__info">
             <div class="profile__title">
               <h1 class="profile__name">Jacques Cousteau</h1>
@@ -155,25 +157,80 @@
           <h3 class="modal__card-title"></h3>
         </div>
       </div>
-    </div>
 
-    <template class="card-template">
-      <div class="card">
-        <img class="card__image" src="#" alt="#" />
-        <div class="card__place">
-          <h2 class="card__title"></h2>
+      <div class="modal modal_type_delete">
+        <div class="modal__content">
           <button
-            class="card__btn-like"
+            class="modal__close"
             type="button"
-            aria-label="Like"
+            aria-label="Close popup"
+          ></button>
+          <h3 class="modal__title">Are you sure?</h3>
+          <form
+            class="modal__form"
+            id="delete-form"
+            name="deleteForm"
+            action="#"
+            novalidate
+          >
+            <button class="modal__button" type="submit">Yes</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal modal_type_avatar">
+        <div class="modal__content">
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close popup"
+          ></button>
+          <h3 class="modal__title">Change profile picture</h3>
+          <form
+            class="modal__form"
+            name="modalEditAvatarForm"
+            novalidate
+          >
+            <label class="modal__field" for="avatar-input">
+              <input
+                class="modal__input"
+                id="avatar-input"
+                type="url"
+                name="link"
+                placeholder="Image link"
+                required
+              />
+              <span
+                class="modal__error"
+                id="avatar-input-error"
+              ></span>
+            </label>
+            <button class="modal__button" type="submit"></button>
+          </form>
+        </div>
+      </div>
+
+      <template class="card-template">
+        <div class="card">
+          <img class="card__image" src="#" alt="#" />
+          <div class="card__place">
+            <h2 class="card__title"></h2>
+            <div class="card__like-container">
+              <button
+                class="card__btn-like"
+                type="button"
+                aria-label="Like"
+              ></button>
+              <span class="card__like-counter"></span>
+            </div>
+          </div>
+          <button
+            class="card__btn-delete"
+            type="button"
+            aria-label="Delete"
           ></button>
         </div>
-        <button
-          class="card__btn-delete"
-          type="button"
-          aria-label="Delete"
-        ></button>
-      </div>
-    </template>
+      </template>
+    </div>
   </body>
 </html>

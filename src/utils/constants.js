@@ -1,34 +1,8 @@
-export const initialCards = [
-  {
-    name: 'Yosemite Valley',
-    link: 'https://code.s3.yandex.net/web-code/yosemite.jpg',
-  },
-  {
-    name: 'Lake Louise',
-    link: 'https://code.s3.yandex.net/web-code/lake-louise.jpg',
-  },
-  {
-    name: 'Bald Mountains',
-    link: 'https://code.s3.yandex.net/web-code/bald-mountains.jpg',
-  },
-  {
-    name: 'Latemar',
-    link: 'https://code.s3.yandex.net/web-code/latemar.jpg',
-  },
-  {
-    name: 'Vanoise National Park',
-    link: 'https://code.s3.yandex.net/web-code/vanoise.jpg',
-  },
-  {
-    name: 'Lago di Braies',
-    link: 'https://code.s3.yandex.net/web-code/lago.jpg',
-  },
-];
-
 export const selectors = {
   gallery: document.querySelector('.gallery'),
   cardTemplate: document.querySelector('.card-template'),
   previewModal: '.modal_type_preview',
+  deleteModal: '.modal_type_delete',
 };
 
 export const modalEditUserInfo = {
@@ -47,6 +21,14 @@ export const modalAddCard = {
   form: document.querySelector('.modal_type_add .modal__form'),
   titleInput: document.querySelector('#title-input'),
   linkInput: document.querySelector('#link-input'),
+};
+
+export const modalEditAvatar = {
+  selector: '.modal_type_avatar',
+  avatarSelector: '.profile__avatar',
+  button: document.querySelector('.profile__avatar'),
+  form: document.querySelector('.modal_type_avatar .modal__form'),
+  avatarInput: document.querySelector('#avatar-input'),
 };
 
 export const validationSettings = {
