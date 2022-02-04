@@ -1,4 +1,4 @@
-import Api from './Api';
+import api from './Api';
 
 export default class Card {
   constructor(
@@ -52,7 +52,7 @@ export default class Card {
   }
 
   _addLike() {
-    Api.addLike(this._cardId).then((res) => {
+    api.addLike(this._cardId).then((res) => {
       this._likeButton.classList.add('card__btn-like_active');
       this._likeCounter.textContent = res.likes.length;
       this._data = res;
@@ -60,7 +60,7 @@ export default class Card {
   }
 
   _removeLike() {
-    Api.removeLike(this._cardId).then((res) => {
+    api.removeLike(this._cardId).then((res) => {
       this._likeButton.classList.remove('card__btn-like_active');
       this._likeCounter.textContent = res.likes.length;
       this._data = res;
