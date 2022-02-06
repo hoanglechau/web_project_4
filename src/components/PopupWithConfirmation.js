@@ -3,7 +3,6 @@ import Popup from './Popup';
 export default class PopupWithConfirmation extends Popup {
   constructor(popupSelector, handleFormSubmit) {
     super(popupSelector);
-    this._modal = document.querySelector('.modal.modal_type_delete');
     this._handleFormSubmit = handleFormSubmit;
   }
 

@@ -1,13 +1,13 @@
-import api from './Api';
-
 export default class Card {
   constructor(
+    api,
     data,
     cardSelector,
     handleCardClick,
     currentUserId,
     deleteSubmitHandler,
   ) {
+    this._api = api;
     this._data = data;
     this._name = data.name;
     this._link = data.link;
@@ -52,19 +52,29 @@ export default class Card {
   }
 
   _addLike() {
-    api.addLike(this._cardId).then((res) => {
-      this._likeButton.classList.add('card__btn-like_active');
-      this._likeCounter.textContent = res.likes.length;
-      this._data = res;
-    });
+    this._api
+      .addLike(this._cardId)
+      .then((res) => {
+        this._likeButton.classList.add('card__btn-like_active');
+        this._likeCounter.textContent = res.likes.length;
+        this._data = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   _removeLike() {
-    api.removeLike(this._cardId).then((res) => {
-      this._likeButton.classList.remove('card__btn-like_active');
-      this._likeCounter.textContent = res.likes.length;
-      this._data = res;
-    });
+    this._api
+      .removeLike(this._cardId)
+      .then((res) => {
+        this._likeButton.classList.remove('card__btn-like_active');
+        this._likeCounter.textContent = res.likes.length;
+        this._data = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   _getTemplate() {

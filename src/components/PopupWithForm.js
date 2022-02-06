@@ -20,10 +20,6 @@ export default class PopupWithForm extends Popup {
         .then(() => {
           this.close();
         })
-        .catch((err) => {
-          console.error(err);
-          return Promise.reject(err);
-        })
         .finally(() => {
           this._submitButton.textContent = defaultText;
           this._submitButton.disabled = false;

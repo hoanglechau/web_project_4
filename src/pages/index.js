@@ -43,6 +43,9 @@ const modalEditForm = new PopupWithForm(
           about: data.about,
           avatar: data.avatar,
         });
+      })
+      .catch((err) => {
+        console.log(err);
       }),
 );
 modalEditForm.setEventListeners();
@@ -51,13 +54,18 @@ const modalEditAvatarForm = new PopupWithForm(
   modalEditAvatar.selector,
   { defaultText: 'Save', updatingText: 'Saving...' },
   (formInput) =>
-    api.setUserAvatar({ avatar: formInput.link }).then((data) => {
-      userInfo.setUserInfo({
-        name: data.name,
-        about: data.about,
-        avatar: data.avatar,
-      });
-    }),
+    api
+      .setUserAvatar({ avatar: formInput.link })
+      .then((data) => {
+        userInfo.setUserInfo({
+          name: data.name,
+          about: data.about,
+          avatar: data.avatar,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
 );
 modalEditAvatarForm.setEventListeners();
 
@@ -84,6 +92,7 @@ const openModalDeleteCard = (cardId, card) => {
 
 const createCard = (res, userInfoData) => {
   const card = new Card(
+    api,
     res,
     selectors.cardTemplate,
     (link, name) => {
@@ -95,49 +104,57 @@ const createCard = (res, userInfoData) => {
   return card.generateCard();
 };
 
-api.getInitialCards().then(([cardsData, userInfoData]) => {
-  const cardList = new Section(
-    {
-      items: cardsData,
-      renderer: (item) => {
-        const cardElement = createCard(item, userInfoData);
-        cardList.addItem(cardElement);
+api
+  .getInitialCards()
+  .then(([cardsData, userInfoData]) => {
+    const cardList = new Section(
+      {
+        items: cardsData,
+        renderer: (item) => {
+          const cardElement = createCard(item, userInfoData);
+          cardList.addItem(cardElement);
+        },
       },
-    },
-    selectors.gallery,
-  );
+      selectors.gallery,
+    );
 
-  cardList.renderItems();
+    cardList.renderItems();
 
-  userInfo.setUserInfo({
-    name: userInfoData.name,
-    about: userInfoData.about,
-    avatar: userInfoData.avatar,
+    userInfo.setUserInfo({
+      name: userInfoData.name,
+      about: userInfoData.about,
+      avatar: userInfoData.avatar,
+    });
+
+    const modalAddForm = new PopupWithForm(
+      modalAddCard.selector,
+      { defaultText: 'Create', updatingText: 'Creating...' },
+      (formInputs) => {
+        api
+          .addCard({
+            name: formInputs.title,
+            link: formInputs.link,
+          })
+          .then((res) => {
+            const cardElement = createCard(res, userInfoData);
+            cardList.prependItem(cardElement);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+    );
+    modalAddForm.setEventListeners();
+
+    modalAddCard.button.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      formValidators.modalAddForm.resetValidation();
+      modalAddForm.open();
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-
-  const modalAddForm = new PopupWithForm(
-    modalAddCard.selector,
-    { defaultText: 'Create', updatingText: 'Creating...' },
-    (formInputs) =>
-      api
-        .addCard({
-          name: formInputs.title,
-          link: formInputs.link,
-        })
-        .then((res) => {
-          const cardElement = createCard(res, userInfoData);
-          cardList.prependItem(cardElement);
-        }),
-  );
-  modalAddForm.setEventListeners();
-
-  modalAddCard.button.addEventListener('click', (evt) => {
-    modalAddCard.form.reset();
-    evt.preventDefault();
-    formValidators.modalAddForm.resetValidation();
-    modalAddForm.open();
-  });
-});
 
 /* -------------------------------------------------------------------------- */
 /*                               Form Validation                              */
@@ -175,8 +192,6 @@ modalEditUserInfo.button.addEventListener('click', (evt) => {
 modalEditAvatar.button.addEventListener('click', (evt) => {
   evt.preventDefault();
   evt.stopPropagation();
-  const profileInfo = userInfo.getUserInfo();
-  modalEditAvatar.avatarInput.value = profileInfo.avatar;
   formValidators.modalEditAvatarForm.resetValidation();
   modalEditAvatarForm.open();
 });
