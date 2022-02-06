@@ -129,7 +129,7 @@ api
     const modalAddForm = new PopupWithForm(
       modalAddCard.selector,
       { defaultText: 'Create', updatingText: 'Creating...' },
-      (formInputs) => {
+      (formInputs) =>
         api
           .addCard({
             name: formInputs.title,
@@ -141,8 +141,7 @@ api
           })
           .catch((err) => {
             console.log(err);
-          });
-      },
+          }),
     );
     modalAddForm.setEventListeners();
 
